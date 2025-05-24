@@ -59,13 +59,41 @@
   实例：单纯显示出目前的工作目录：
   [root@www ~]# pwd
   /root   <== 显示出目录啦～
+  实例显示出实际的工作目录，而非链接档本身的目录名而已
+  [root@www ~]# cd /var/mail   <==注意，/var/mail是一个链接档
+  [root@www mail]# pwd
+  /var/mail         <==列出目前的工作目录
+  [root@www mail]# pwd -P
+  /var/spool/mail   <==怎么回事？有没有加 -P 差很多～
+  [root@www mail]# ls -ld /var/mail
+  lrwxrwxrwx 1 root root 10 Sep  4 17:54 /var/mail -> spool/mail
+  # 看到这里应该知道为啥了吧？因为 /var/mail 是链接档，链接到 /var/spool/mail 
+  # 所以，加上 pwd -P 的选项后，会不以链接档的数据显示，而是显示正确的完整路径啊！
 
+  mkdir (创建新目录)
+  语法：
+  mkdir [-mp] 目录名称
+  选项与参数：
+  -m ：配置文件的权限喔！直接配置，不需要看默认权限 (umask) 的脸色～
+  -p ：帮助你直接将所需要的目录(包含上一级目录)递归创建起来！
 
+  实例：请到/tmp底下尝试创建数个新目录看看：
+  [root@www ~]# cd /tmp
+  [root@www tmp]# mkdir test    <==创建一名为 test 的新目录
+  [root@www tmp]# mkdir test1/test2/test3/test4
+  mkdir: cannot create directory `test1/test2/test3/test4': 
+  No such file or directory       <== 没办法直接创建此目录啊！
+  [root@www tmp]# mkdir -p test1/test2/test3/test4
+  加了这个 -p 的选项，可以自行帮你创建多层目录！
 
-
-
-
-
+  实例：创建权限为 rwx--x--x 的目录。
+  [root@www tmp]# mkdir -m 711 test2
+  [root@www tmp]# ls -l
+  drwxr-xr-x  3 root  root 4096 Jul 18 12:50 test
+  drwxr-xr-x  3 root  root 4096 Jul 18 12:53 test1
+  drwx--x--x  2 root  root 4096 Jul 18 12:54 test2
+  上面的权限部分，如果没有加上 -m 来强制配置属性，系统会使用默认属性。
+  如果我们使用 -m ，如上例我们给予 -m 711 来给予新的目录 drwx--x--x 的权限。
 
 
 
