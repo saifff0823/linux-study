@@ -57,6 +57,58 @@
       Linux文件属性有两种设置方法，一种是数字，一种是符号。
       Linux 文件的基本权限就有九个，
       分别是 owner/group/others(拥有者/组/其他) 三种身份各有自己的 read/write/execute 权限。
+      文件的权限字符为： -rwxrwxrwx 这九个权限是三个三个一组的！
+      我们可以使用数字来代表各个权限，各权限的分数对照表如下：
+      r:4
+      w:2
+      x:1
+      每种身份(owner/group/others)各自的三个权限(r/w/x)分数是需要累加的
+      例如当权限为： -rwxrwx--- 分数则是：
+      owner = rwx = 4+2+1 = 7
+      group = rwx = 4+2+1 = 7
+      others= --- = 0+0+0 = 0
+      所以等一下我们设定权限的变更时，该文件的权限数字就是 770。
+      变更权限的指令 chmod 的语法是这样的：
+      chmod [-R] xyz 文件或目录
+      选项与参数：
+      xyz : 就是刚刚提到的数字类型的权限属性，为 rwx 属性数值的相加。
+      -R : 进行递归(recursive)的持续变更，以及连同次目录下的所有文件都会变更
+
+      举个例子，如果要将.bashrc 这个文件夹所有的权限都设定启用，那么命令如下：
+      [root@www ~]# ls -al .bashrc
+      -rw-r--r-- 1 root root 395 Jul 4 11:45 .bashrc
+      [root@www ~]# chmod 777 .bashrc
+      [root@www ~]# ls -al .bashrc 
+      -rwxrwxrwx 1 root root 395 Jul 4 11:45 .bashrc
+
+      那如果要将权限变成 -rwxr-xr-- 呢？那么权限的分数就成为 [4+2+1][4+0+1][4+0+0]=754。
+
+      第二种改变权限的方法
+      符号类型改变文件权限
+
+      user：用户
+      group：组
+      others：其他
+      那么我们就可以使用 u, g, o 来代表三种身份的权限。
+      此外， a 则代表 all，即全部的身份。读写的权限可以写成 r, w, x，
+      如果我们需要将文件权限设置为 -rwxr-xr-- ，可以使用 chmod u=rwx,g=rx,o=r 文件名 来设定:
+      #  touch test1    // 创建 test1 文件
+      # ls -al test1    // 查看 test1 默认权限
+      -rw-r--r-- 1 root root 0 Nov 15 10:32 test1
+      # chmod u=rwx,g=rx,o=r  test1    // 修改 test1 权限
+      # ls -al test1
+      -rwxr-xr-- 1 root root 0 Nov 15 10:32 test1
+      
+      可以使用 + , - , = 来修改已经存在的权限，例如：
+      #  chmod  a-x test1
+      # ls -al test1
+      -rw-r--r-- 1 root root 0 Nov 15 10:32 test1
+
+
+
+
+
+
 
 
 
