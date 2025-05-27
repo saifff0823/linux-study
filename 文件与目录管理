@@ -70,7 +70,7 @@
   # 看到这里应该知道为啥了吧？因为 /var/mail 是链接档，链接到 /var/spool/mail 
   # 所以，加上 pwd -P 的选项后，会不以链接档的数据显示，而是显示正确的完整路径啊！
 
-  mkdir (创建新目录)
+  4、mkdir (创建新目录)
   语法：
   mkdir [-mp] 目录名称
   选项与参数：
@@ -94,6 +94,82 @@
   drwx--x--x  2 root  root 4096 Jul 18 12:54 test2
   上面的权限部分，如果没有加上 -m 来强制配置属性，系统会使用默认属性。
   如果我们使用 -m ，如上例我们给予 -m 711 来给予新的目录 drwx--x--x 的权限。
+
+  5、rmdir (删除空的目录)
+  语法：
+  rmdir [-P] 目录名称
+  选项与参数：
+  -p ：从该目录起，一次删除多级空目录
+  删除runnoob目录
+  [root@www tmp]# rmdir runnoob/
+  将 mkdir 实例中创建的目录(/tmp 底下)删除掉！
+  
+  [root@www tmp]# ls -l   <==看看有多少目录存在？
+  drwxr-xr-x  3 root  root 4096 Jul 18 12:50 test
+  drwxr-xr-x  3 root  root 4096 Jul 18 12:53 test1
+  drwx--x--x  2 root  root 4096 Jul 18 12:54 test2
+  [root@www tmp]# rmdir test   <==可直接删除掉，没问题
+  [root@www tmp]# rmdir test1  <==因为尚有内容，所以无法删除！
+  rmdir: `test1': Directory not empty
+  [root@www tmp]# rmdir -p test1/test2/test3/test4
+  [root@www tmp]# ls -l        <==您看看，底下的输出中test与test1不见了！
+  drwx--x--x  2 root  root 4096 Jul 18 12:54 test2
+
+  利用 -p 这个选项，立刻就可以将 test1/test2/test3/test4 一次删除。
+  不过要注意的是，这个 rmdir 仅能删除空的目录，你可以使用 rm 命令来删除非空目录。
+
+  6、cp (复制文件或目录)
+  cp就是拷贝文件和目录
+  语法：
+  [root@www ~]# cp [-adfilprsu] 来源档（source）目标档（destination）
+  [root@www ~]# cp [options] source1 source2 source3 ... directory
+
+  选项与参数：
+  -a：相当於 -pdr 的意思，至於 pdr 请参考下列说明；(常用)
+  -d：若来源档为链接档的属性(link file)，则复制链接档属性而非文件本身；
+  -f：为强制(force)的意思，若目标文件已经存在且无法开启，则移除后再尝试一次；
+  -i：若目标档(destination)已经存在时，在覆盖时会先询问动作的进行(常用)
+  -l：进行硬式链接(hard link)的链接档创建，而非复制文件本身；
+  -p：连同文件的属性一起复制过去，而非使用默认属性(备份常用)；
+  -r：递归持续复制，用於目录的复制行为；(常用)
+  -s：复制成为符号链接档 (symbolic link)，亦即『捷径』文件；
+  -u：若 destination 比 source 旧才升级 destination ！
+
+  用 root 身份，将 root 目录下的 .bashrc 复制到 /tmp 下，并命名为 bashrc
+  [root@www ~]# cp ~/.bashrc /tmp/bashrc
+  [root@www ~]# cp -i ~/.bashrc /tmp/bashrc
+  cp: overwrite `/tmp/bashrc'? n  <==n不覆盖，y为覆盖
+
+  7、rm (移除文件或目录)
+  语法：
+  rm [-fir] 文件或目录
+  选项与参数：
+  -f ：就是 force 的意思，忽略不存在的文件，不会出现警告信息；
+  -i ：互动模式，在删除前会询问使用者是否动作
+  -r ：递归删除啊！最常用在目录的删除了！这是非常危险的选项！！！
+
+  将刚刚在 cp 的实例中创建的 bashrc 删除掉！
+  [root@www tmp]# rm -i bashrc
+  rm: remove regular file `bashrc'? y
+  如果加上 -i 的选项就会主动询问喔，避免你删除到错误的档名！
+
+  8、mv (移动文件与目录，或修改名称)
+  语法：
+  [root@www ~]# mv [-fiu] source destination
+  [root@www ~]# mv [options] source1 source2 source3 ... directory
+  选项与参数：
+  -f ：force 强制的意思，如果目标文件已经存在，不会询问而直接覆盖；
+  -i ：若目标文件 (destination) 已经存在时，就会询问是否覆盖！
+  -u ：若目标文件已经存在，且 source 比较新，才会升级 (update)
+
+  复制一文件，创建一目录，将文件移动到目录中
+  [root@www ~]# cd /tmp
+  [root@www tmp]# cp ~/.bashrc bashrc
+  [root@www tmp]# mkdir mvtest
+  [root@www tmp]# mv bashrc mvtest
+  将某个文件移动到某个目录去，就是这样做！
+  将刚刚的目录名称更名为 mvtest2
+  [root@www tmp]# mv mvtest mvtest2
 
 
 
