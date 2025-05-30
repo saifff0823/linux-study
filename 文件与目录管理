@@ -261,8 +261,26 @@ Linux 文件内容查看
   N         ：反向的重复前一个搜寻 (与 / 或 ? 有关！)
   q         ：离开 less 这个程序；
 
+  head
+  取出文件前面几行
+  语法：
+  head [-n number] 文件 
+  选项与参数：
+  -n ：后面接数字，代表显示几行的意思
+  [root@www ~]# head /etc/man.config
+  默认的情况中，显示前面 10 行！若要显示前 20 行，就得要这样：
+  [root@www ~]# head -n 20 /etc/man.config
 
-
+  tail
+  取出文件后面几行
+  语法：
+  tail [-n number] 文件 
+  选项与参数：
+  -n ：后面接数字，代表显示几行的意思
+  -f ：表示持续侦测后面所接的档名，要等到按下[ctrl]-c才会结束tail的侦测
+  [root@www ~]# tail /etc/man.config
+  # 默认的情况中，显示最后的十行！若要显示最后的 20 行，就得要这样：
+  [root@www ~]# tail -n 20 /etc/man.config
 
 
 
